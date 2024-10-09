@@ -88,3 +88,4 @@ As we continue developing the project, future tasks will involve:
 2. Refining the web application interface with React or Flask.
 3. Scaling the project to handle large datasets and real-time video streams.
 4. Optimizing computational resources, potentially exploring cloud computing solutions for efficient model training and deployment.
+
