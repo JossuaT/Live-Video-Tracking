@@ -5,14 +5,16 @@ model = cv.CascadeClassifier(cv.data.haarcascades + 'haarcascade_frontalface_def
 facecam = cv.VideoCapture(0)
 
 while True:
-    # Lire et convertir l'image en niveaux de gris
+    # Lire
     ret, frame = facecam.read()
-    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     
-    # Détecter les visages et dessiner les rectangles
+    # Niveaux de gris, détection et rectangles
+    gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     faces = model.detectMultiScale(gray_frame, scaleFactor=1.1, minNeighbors=5)
     for (x, y, w, h) in faces:
-        cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+        start_point, end_point = (x, y), (x+w, y+h)
+        color = (0, 255, 0)
+        cv.rectangle(frame, start_point, end_point, color, thickness=2)
     
     # Afficher le flux
     cv.imshow('Face Detection', frame)
@@ -21,6 +23,6 @@ while True:
     if cv.waitKey(1) == 27:
         break
 
-# Libérer la capture et fermer les fenêtres
+# Arrêt capture et ferme les fenêtres
 facecam.release()
 cv.destroyAllWindows()
