@@ -3,8 +3,8 @@ import os
 import numpy as np
 from PIL import Image
 
-# /!\ FONCTIONNE ???
-relative_path_to_dataset = 'players_dataset/'
+# Chemin vers le dataset d'entraînement
+relative_path_to_dataset = 'players_dataset\\'
 dataset_path = os.path.join(os.path.dirname(__file__), relative_path_to_dataset)
 
 # Initialiser le modèle LBPH pour la reconnaissance faciale
