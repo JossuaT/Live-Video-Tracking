@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 
 # Chemin vers le dataset d'entraînement
-relative_path_to_dataset = 'players_dataset\\'
+relative_path_to_dataset = 'players_dataset'
 dataset_path = os.path.join(os.path.dirname(__file__), relative_path_to_dataset)
 
 # Initialiser le modèle LBPH pour la reconnaissance faciale
@@ -18,6 +18,7 @@ def get_images_and_labels(path):
     image_paths = [os.path.join(path, f) for f in os.listdir(path) if not f.startswith('.')]
     face_samples = []
     face_labels = []
+    print (image_paths)
     
     for image_path in image_paths:
         # Convertir l'image en niveaux de gris / array
@@ -28,7 +29,7 @@ def get_images_and_labels(path):
         face_name = int(os.path.split(image_path)[-1].split(".")[0])
 
         # Détecter les visages dans l'image
-        faces = face_cascade.detectMultiScale(img)
+        faces = face_cascade.detectMultiScale(img) # search for 2 other hyperparameter
 
         # Ajouter chaque visage détecté et son label à la liste d'entraînement
         for (x, y, w, h) in faces:
