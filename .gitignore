@@ -1,0 +1,20 @@
+# Ignorer l'environnement virtuel
+venv/
+.env/
+*.venv/
+venv*/
+env*/
+
+# Ignorer les fichiers et dossiers de cache générés par Python
+__pycache__/
+*.py[cod]
+
+# Ignorer les fichiers et dossiers de logs
+*.log
+logs/
+
+# Ignorer les fichiers spécifiques à Visual Studio Code
+.vscode/
+
+# Ignorer les notebooks temporaires
+*.ipynb_checkpoints/
