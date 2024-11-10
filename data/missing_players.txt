@@ -1,0 +1,41 @@
+MissingPlayers = 8/649
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 14371.
+ Il s'agit de Edouard Richer, qui joue à La Rochelle
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 14465.
+ Il s'agit de Mathis Brunet, qui joue à La Rochelle
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 14367.
+ Il s'agit de Simeli Daunivucu, qui joue à La Rochelle
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 13776.
+ Il s'agit de Axel Jolet, qui joue à Racing 92
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 14739.
+ Il s'agit de Isaac Koffi, qui joue à Stade Français
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 14504.
+ Il s'agit de Samuel Jean-Christophe, qui joue à Toulon
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 14466.
+ Il s'agit de Evredi Iposo, qui joue à Vannes
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =
+
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  = 
+Error on player id : 14057.
+ Il s'agit de Jean Cotarmanac'h, qui joue à Vannes
+ =  =  =  =  =  =  =  =  =  =  =  =  =  =  =

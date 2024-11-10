@@ -116,7 +116,9 @@ def get_players_database(urls: list) -> dict:
                 print(f"Error on player id : {get_players_id(url)}. \n Il s'agit de {name}, qui joue à {team}")
                 print(" =  =  =  =  =  =  =  =  =  =  =  =  =  =  = ")
             except:
-                pass
+                print(" =  =  =  =  =  =  =  =  =  =  =  =  =  =  = ")
+                print(f"Error on player id : {get_players_id(url)}.")
+                print(" =  =  =  =  =  =  =  =  =  =  =  =  =  =  = ")
             pass
     return players
 
