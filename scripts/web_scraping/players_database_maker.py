@@ -96,20 +96,24 @@ def get_players_database(urls: list) -> dict:
             time.sleep(1.5)
         
         soup = get_soup(url)
-        identite = ["", "", "", "", ""]
+        identite = []
         name, team, img = "", "", ""
         
-        for element in soup.find_all('section', {'class': 'titre data-content'}):
-            name = element.find('h1', {'class': 'nom_sportif'}).string
-            team = element.find('a', {'class': 'FG_club'}).string
-            img = element.find('img')['src']
-        for element in soup.find_all('div', {'class': 'identite'}):
-            for ligne in element.find_all('tr'):
-                if len(element.find_all('tr')) == 5 :
-                    print(element.find_all('tr').index(ligne))
-                    identite[element.find_all('tr').index(ligne)] = str(strong.string for strong in ligne.find('strong'))
-                    print(identite)
-                else:
+        for element1 in soup.find_all('section', {'class': 'titre data-content'}):
+        # 'element1' contient le nom, l'équipe et l'image
+            name = element1.find('h1', {'class': 'nom_sportif'}).string
+            team = element1.find('a', {'class': 'FG_club'}).string
+            img = element1.find('img')['src']
+        for element2 in soup.find_all('div', {'class': 'identite'}):
+        # 'element2' contient toutes les infos du joueur, mais pas le nom, l'équipe et l'image
+            if len(element2.find_all('tr')) == 5 :
+                for ligne in element2.find_all('tr'):
+                # 'ligne' de la fiche du joueur contient soit une date, soit un pays soit un poste etc...
+                    identite.extend(strong.string for strong in ligne.find('strong'))
+            else:
+                identite = ["", "", "", "", ""]
+                for ligne in element2.find_all('tr'):
+                # 'ligne' de la fiche du joueur contient soit une date, soit un pays soit un poste etc...
                     try :
                         for td in ligne.find('td'):
                             if str(td)[0:4] == "Pays":
@@ -154,18 +158,16 @@ def get_players_database(urls: list) -> dict:
 ##### ##### #####
 ##### ##### #####
 
-
 base_url = "https://www.lequipe.fr/"
 top14_url = "https://www.lequipe.fr/Rugby/Top-14/"
 
-#club_pages_urls = get_links_to_clubs_pages(top14_url)
+club_pages_urls = get_links_to_clubs_pages(top14_url)
+club_cards_urls = get_links_to_clubs_cards(club_pages_urls)
+player_cards_urls = get_links_to_players_cards(club_cards_urls)
+players_database = get_players_database(player_cards_urls)
 
-#club_cards_urls = get_links_to_clubs_cards(club_pages_urls)
-
-#player_cards_urls = get_links_to_players_cards(club_cards_urls)
-
-players_database = get_players_database(["https://www.lequipe.fr/Rugby/RugbyFicheJoueur11729.html", "https://www.lequipe.fr/Rugby/RugbyFicheJoueur14466.html"])
-
+# Appel de fonction test :
+# players_database = get_players_database(["https://www.lequipe.fr/Rugby/RugbyFicheJoueur11729.html", "https://www.lequipe.fr/Rugby/RugbyFicheJoueur14466.html"])
 
 # Enregistrer les données dans un fichier JSON
 with open('project/data/top14_players_database.json', 'w', encoding='utf-8') as f:
