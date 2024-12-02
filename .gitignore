@@ -1,9 +1,6 @@
 # Ignorer l'environnement virtuel
-venv/
-.env/
-*.venv/
-venv*/
-env*/
+*venv*/
+*env*/
 
 # Ignorer les fichiers et dossiers de cache générés par Python
 __pycache__/
