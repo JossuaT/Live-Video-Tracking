@@ -11,7 +11,7 @@ class TeamAssigner:
         🎨 Regrouper les couleurs extraites en 3 groupes :
         - Team 1
         - Team 2
-        - Arbitre
+        - Arbitre (choisi comme le groupe avec le moins de joueurs)
         """
         # ✅ Extraire toutes les couleurs des joueurs détectés
         colors = [player["color"] for player in frame_players if "color" in player]
@@ -25,16 +25,10 @@ class TeamAssigner:
         cluster_centers = kmeans.cluster_centers_
         labels = kmeans.labels_
 
-        # 🎨 Associer chaque cluster à Team_1, Team_2, Referee
-        # Hypothèse : L'arbitre porte une couleur distincte (choisie comme le cluster le plus isolé)
-        distances = []
-        for i in range(3):
-            # Somme des distances entre un cluster et les deux autres
-            dist = sum(np.linalg.norm(cluster_centers[i] - cluster_centers[j])
-                       for j in range(3) if j != i)
-            distances.append(dist)
-
-        referee_cluster = np.argmax(distances)  # 🎯 Cluster le plus "isolé"
+        # 🎨 Identifier le cluster avec le moins de joueurs comme arbitre
+        unique, counts = np.unique(labels, return_counts=True)
+        cluster_counts = dict(zip(unique, counts))
+        referee_cluster = min(cluster_counts, key=cluster_counts.get)
         other_clusters = [i for i in range(3) if i != referee_cluster]
 
         self.team_color["Referee"] = tuple(map(int, cluster_centers[referee_cluster]))
@@ -65,6 +59,6 @@ class TeamAssigner:
         def color_distance(c1, c2):
             return np.linalg.norm(np.array(c1) - np.array(c2))
 
-        distances = {team: color_distance(player_color, color) 
+        distances = {team: color_distance(player_color, color)
                      for team, color in self.team_color.items()}
         return min(distances, key=distances.get)
