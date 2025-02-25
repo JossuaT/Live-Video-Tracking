@@ -2,3 +2,11 @@ numpy==2.1.2
 opencv-python==4.10.0.84
 opencv-contrib-python==4.10.0.84
 pillow==10.4.0
+
+#####################################For Detection##################################
+opencv-python
+scikit-learn
+ultralytics
+supervision
+numpy
+matplotlib
