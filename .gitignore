@@ -19,3 +19,6 @@ logs/
 # Ignorer les notebooks temporaires
 *.ipynb_checkpoints/
 .DS_Store
+
+# Ignorer les weight
+./models_weight
