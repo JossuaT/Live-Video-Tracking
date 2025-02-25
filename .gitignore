@@ -18,3 +18,4 @@ logs/
 
 # Ignorer les notebooks temporaires
 *.ipynb_checkpoints/
+.DS_Store
