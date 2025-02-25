@@ -16,7 +16,7 @@ def main():
     video_frames = read_video(video_path)
 
     # 🎯 2. Initialiser le tracker (détection + couleurs des joueurs)
-    tracker = Tracker('models/yolo11x.pt')
+    tracker = Tracker('models_weight/yolo11x.pt')
     bounding_boxes = tracker.get_bounding_boxes(
         video_frames, read_from_stub=True, stub_path='stubs/tracks_stubs.pkl'
     )
