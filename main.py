@@ -12,7 +12,7 @@ from teams_assigner import TeamAssigner
 
 def main():
     # 📹 1. Charger la vidéo
-    video_path = "video/video.mp4"
+    video_path = "video/video_4.mp4"
     video_frames = read_video(video_path)
 
     # 🎯 2. Initialiser le tracker (détection + couleurs des joueurs)
