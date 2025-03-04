@@ -1,0 +1,1 @@
+from .rapport import RapportGenerator
