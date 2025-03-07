@@ -1,9 +1,6 @@
 # Ignorer l'environnement virtuel
-venv/
-.env/
-*.venv/
-venv*/
-env*/
+*venv*/
+*env*/
 
 # Ignorer les fichiers et dossiers de cache générés par Python
 __pycache__/
@@ -20,4 +17,4 @@ logs/
 *.ipynb_checkpoints/
 
 # Ignorer les données lourdes
-heavy_data/
+*heavy_data/
