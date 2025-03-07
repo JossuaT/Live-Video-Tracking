@@ -1,180 +1,125 @@
+# IQVision
+
+Ce projet permet de réaliser le suivi et la reconnaissance de joueurs dans des vidéos à l'aide de YOLO pour la détection, DeepFace pour la reconnaissance et d'autres outils pour l'annotation et l'analyse (suivi, attribution d'équipe, génération de rapport via ChatGPT, etc.).  
+Les résultats de suivi (bounding boxes, DeepFace, etc.) sont sauvegardés dans un fichier stub (pickle) afin de permettre leur réutilisation lors de différentes exécutions.
+
+---
+
 ## 🚀 Installation
 
-### 1. **Cloner le dépôt**
+### 1. Cloner le dépôt
+
 ```bash
 git clone <URL_DU_DEPOT>
 cd <NOM_DU_DEPOT>
 ```
 
-### 2. **Créer un environnement virtuel (optionnel mais recommandé)**
+### 2. Utiliser Poetry pour gérer l’environnement
+
+Si vous n’avez pas encore Poetry installé, consultez les instructions d’installation de Poetry.
+Installez ensuite les dépendances avec :
+
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # Sur Mac/Linux
-venv\\Scripts\\activate    # Sur Windows
+poetry install
 ```
 
-### 3. **Installer les dépendances**
+Pour lancer le projet, utilisez :
+
 ```bash
-pip install -r requirements.txt
+poetry run python main.py
 ```
 
----
+### 3. Télécharger les poids du modèle
 
-## 📥 Télécharger les poids du modèle
+⚠️ Les poids YOLO ne sont pas inclus dans ce dépôt  
+Le dossier `models_weight` existe, mais vous devez télécharger les poids YOLO :
 
-⚠️ **Les poids YOLO ne sont pas inclus dans ce dépôt**, mais le dossier `models_weight` existe déjà.
-
-Téléchargez les poids YOLO :
 ```bash
 wget -O models_weight/yolo11x.pt https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11x.pt
 ```
 
-👉 **Si `wget` n'est pas disponible** :
+Si `wget` n’est pas disponible :
+
 ```bash
 curl -L https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11x.pt -o models_weight/yolo11x.pt
 ```
 
-Dans `main.py`, assurez-vous que le chemin du modèle est correct :
+Vérifiez que le chemin du modèle dans `main.py` est correct :
+
 ```python
 tracker = Tracker('models_weight/yolo11x.pt')
 ```
 
----
+### 4. Ajouter vos vidéos
 
-## 🎬 Ajouter vos vidéos
+Le dossier `video` existe déjà, mais il ne contient pas de vidéos.  
+Ajoutez vos vidéos au format `.mp4` dans le dossier `video/`.
 
-⚠️ **Le dossier `video` existe déjà**, mais il ne contient pas de vidéos.
+Dans `main.py`, vérifiez que le chemin de la vidéo est correct :
 
-Ajoutez vos vidéos au format `.mp4` dans `video/`.
-
-Dans `main.py`, assurez-vous que le chemin de la vidéo est correct :
 ```python
-video_path = "video/video.mp4"
+video_path = "video/video_4.mp4"
 ```
 
 ---
 
 ## ⚡ Exécuter le projet
 
-1. **Vérifiez les chemins dans `main.py`** :
-```python
-video_path = "video/video.mp4"  # Chemin de la vidéo
-tracker = Tracker('models_weight/yolo11x.pt')  # Chemin vers les poids YOLO
-```
+1. Vérifiez dans `main.py` que les chemins suivants sont corrects :
+   - Vidéo : `video/video_4.mp4`
+   - Poids YOLO : `models_weight/yolo11x.pt`
+   - Stub pour le suivi : `stubs/tracks_stubs.pkl`
+2. Lancer le projet avec :
 
-2. **Lancer l'exécution** :
 ```bash
-python main.py
+poetry run python main.py
 ```
 
-📂 Le résultat sera enregistré dans `output_videos/output_video.avi`.
+La vidéo annotée sera enregistrée dans `output_videos/output_video.avi` et un rapport sera généré dans `Rapport.txt`.
 
 ---
 
-## 🏃 Fonctionnement détaillé du code (`main.py`)
+## 📝 Fonctionnement détaillé
 
-1. **Chargement de la vidéo** :
-```python
-video_frames = read_video(video_path)
-```
+- **Chargement de la vidéo**  
+  Le script lit la vidéo et récupère toutes les frames via la fonction `read_video`.
 
-2. **Initialisation du tracker** :
-```python
-tracker = Tracker('models_weight/yolo11x.pt')
-bounding_boxes = tracker.get_bounding_boxes(
-    video_frames, read_from_stub=True, stub_path='stubs/tracks_stubs.pkl'
-)
-```
+- **Détection et Tracking**  
+  La classe `Tracker` utilise YOLO pour détecter les objets (joueurs et ballon) et ByteTrack pour les suivre.  
+  Les bounding boxes, les IDs de suivi et les résultats de reconnaissance DeepFace (nom du joueur et zone du visage) sont cumulés dans un fichier stub (pickle) situé dans `stubs/tracks_stubs.pkl`.  
+  Lors d’une nouvelle exécution, le script tente de charger ce stub afin de conserver les joueurs déjà reconnus (leurs noms et IDs).
 
-3. **Attribution des équipes** :
-```python
-team_assigner = TeamAssigner()
-team_assigner.assign_team_color(bounding_boxes[0])
+- **Attribution d’équipes**  
+  Le module `teams_assigner` attribue des équipes et des couleurs aux joueurs.
 
-for frame_idx, frame_players in enumerate(bounding_boxes):
-    for player in frame_players:
-        team = team_assigner.get_player_team(player["color"])
-        player["team"] = team
-        player["team_color"] = team_assigner.team_color[team]
-```
+- **Annotation de la vidéo**  
+  Le `Tracker` dessine :
+  - Une bounding box principale autour de chaque détection.
+  - Un rectangle bleu pour tous les visages détectés (si une zone du visage est trouvée).
+  - Une flèche rouge uniquement pour les joueurs dont la reconnaissance DeepFace est réussie (lorsque `face_identity` n’est pas `None`).
 
-4. **Annotation de la vidéo** :
-```python
-output_frames = tracker.draw_annotations(video_frames, bounding_boxes)
-```
+- **Statistiques et Rapport**  
+  Le script calcule plusieurs statistiques :
+  - Nombre total de frames traitées.
+  - Durée totale de la vidéo.
+  - Nombre de joueurs uniques.
+  - Mapping des IDs vers les noms des joueurs reconnus.
+  - Informations sur la possession du ballon et les passes effectuées.
+  
+  Ces statistiques sont ensuite envoyées à `RapportGenerator` qui utilise l’API ChatGPT (modèle `gpt-3.5-turbo`) pour générer un rapport détaillé dans le fichier `Rapport.txt`.
 
-5. **Sauvegarde de la vidéo annotée** :
-```python
-save_video(output_frames, "output_videos/output_video.avi", video_path)
-```
-
----
-
-## 🧪 Structure complète du projet
-
-```
-.
-├── README.md
-├── README_Detect.md
-├── data
-│   ├── image.jpg
-│   ├── players_dataset
-│   │   ├── AntoineDupont
-│   │   │   └── 9.jpg
-│   │   ├── JackWillis
-│   │   │   └── 7.jpg
-│   │   ├── ds_model_arcface_detector_opencv_aligned_normalization_base_expand_0.pkl
-│   │   ├── ds_model_deepface_detector_opencv_aligned_normalization_base_expand_0.pkl
-│   │   ├── ds_model_facenet512_detector_opencv_aligned_normalization_base_expand_0.pkl
-│   │   ├── ds_model_facenet_detector_opencv_aligned_normalization_base_expand_0.pkl
-│   │   └── ds_model_vggface_detector_opencv_aligned_normalization_base_expand_0.pkl
-│   └── top14_players_database.json
-├── main.py
-├── models
-│   ├── face_recognition_model
-│   │   ├── face_detector.py
-│   │   ├── face_recognition.py
-│   │   └── flux_video.py
-│   └── face_recognition_model.yml
-├── models_weight/
-├── output_videos/
-├── packages
-│   ├── __init__.py
-│   └── video.py
-├── requirements.txt
-├── scripts
-│   └── web_scraping
-│       └── players_database_maker.py
-├── stubs/
-├── teams_assigner
-│   ├── __init__.py
-│   ├── team_assigner.py
-├── tests
-│   ├── test-DeepFace.ipynb
-│   ├── test-HTTPserver.py
-│   ├── test-app.py
-│   └── test-pop-up.py
-├── trackers
-│   ├── __init__.py
-│   └── tracker.py
-├── utils
-│   ├── __init__.py
-│   ├── bbox_utils.py
-│   ├── colors_utils.py
-│   └── video_utils.py
-└── video/
-```
+- **Sauvegarde et restauration du Stub**  
+  Le fichier stub (pickle) cumule les bounding boxes, le suivi des joueurs reconnus et les résultats DeepFace, permettant ainsi de conserver ces informations entre les exécutions.
 
 ---
 
 ## 💡 Contributions
 
-- Créez une issue pour suggérer des améliorations.
-- Forkez le projet, apportez vos modifications et proposez une pull request.
+- Ouvrez une issue pour proposer des améliorations.
+- Forkez le projet, apportez vos modifications et soumettez une pull request.
 
 ---
 
 ## 📩 Support
 
-Pour toute question, ouvrez une issue ou contactez directement Nathan Sornet.
-
+Pour toute question, ouvrez une issue sur GitHub ou contactez directement l’auteur.

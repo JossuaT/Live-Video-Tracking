@@ -1,4 +1,3 @@
-# rapport.py
 from openai import OpenAI
 
 class RapportGenerator:
@@ -12,10 +11,11 @@ class RapportGenerator:
             prompt += f"- {key} : {value}\n"
         prompt += (
             "\nÀ partir de ces informations, rédige un rapport détaillé en analysant les insights suivants :\n"
-            "1. La durée de la vidéo (nombre de frames).\n"
+            "1. La durée de la vidéo (nombre de frames et temps total).\n"
             "2. Le nombre de joueurs uniques détectés.\n"
             "3. La liste des joueurs reconnus (via reconnaissance faciale).\n"
-            "4. Le joueur le plus souvent en possession du ballon et le nombre de frames concernées.\n"
+            "4. Le joueur qui a le ballon le plus longtemps et qui à surement due attaqué la ligne en conséquence.\n"
+            "5. Les passes de ballon : indiquer pour chaque passe qui a cédé le ballon et qui l'a reçu.\n"
             "Propose également des stratégies ou recommandations basées sur ces données."
         )
         return prompt
@@ -41,7 +41,8 @@ if __name__ == '__main__':
         "Nombre de frames traitées": 1200,
         "Nombre de joueurs uniques": 22,
         "Joueurs reconnus (IDs)": [1, 3, 5],
-        "Ballon possédé par (ID) et nombre de frames": (3, 100)
+        "Ballon possédé par (ID) et nombre de frames": (3, 100),
+        "Passes de ballon (du joueur A vers le joueur B)": [(1, 3), (3, 5), (5, 1)]
     }
     generator = RapportGenerator(api_key="VOTRE_API_KEY")
     generator.create_rapport(stats)

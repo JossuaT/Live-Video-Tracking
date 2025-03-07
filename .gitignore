@@ -30,6 +30,9 @@ output_videos/*
 # Ignorer le ficher pickles 
 stubs/*
 
-#Ignorer les test 
+# Ignorer les test 
 Annotated_Video_Results/*
 Result_test/*
+
+# Ignorer le fichier config sécurité des clés API
+config/*
