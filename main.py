@@ -136,6 +136,7 @@ def main():
         pickle.dump(data, f)
     print(f"Stub mis à jour sauvegardé dans {stub_path}")
 
+
     # Génération des heatmaps via le module Rapport/heatmap.py
     # Ajustez field_size selon les dimensions de votre vidéo ou terrain
     # N'utiliser que sur des plan de long.
