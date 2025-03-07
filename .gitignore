@@ -18,3 +18,6 @@ logs/
 
 # Ignorer les notebooks temporaires
 *.ipynb_checkpoints/
+
+# Ignorer les données lourdes
+heavy_data/
