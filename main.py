@@ -1,9 +1,9 @@
 import cv2
 import os
 import pickle
-from utils import read_video, save_video
-from trackers import Tracker
-from teams_assigner import TeamAssigner
+from packages.utils import read_video, save_video
+from packages.trackers import Tracker
+from packages.teams_assigner import TeamAssigner
 # from rapport import RapportGenerator, generate_heatmap
 # from config import API_KEY
 

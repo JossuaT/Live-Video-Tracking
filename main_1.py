@@ -6,9 +6,9 @@
 # if __name__ == "__main__":
 #     main()
 
-from utils import read_video, save_video
-from trackers import Tracker
-from teams_assigner import TeamAssigner
+from packages.utils import read_video, save_video
+from packages.trackers import Tracker
+from packages.teams_assigner import TeamAssigner
 
 def main():
     # 📹 1. Charger la vidéo
