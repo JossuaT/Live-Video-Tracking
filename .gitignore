@@ -16,5 +16,25 @@ logs/
 # Ignorer les notebooks temporaires
 *.ipynb_checkpoints/
 
+#Fichiers de configs MacOS
+.DS_Store
+
+# Ignorer les weight
+models_weight/*
+
+# Ignorer les vidéos 
+video/*
+output_videos/*
+
+# Ignorer le ficher pickles 
+stubs/*
+
+# Ignorer les test 
+Annotated_Video_Results/*
+Result_test/*
+
+# Ignorer le fichier config sécurité des clés API
+config/*
+
 # Ignorer les données lourdes
 *heavy_data/
