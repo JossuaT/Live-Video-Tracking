@@ -4,8 +4,8 @@ import pickle
 from utils import read_video, save_video
 from trackers import Tracker
 from teams_assigner import TeamAssigner
-from rapport import RapportGenerator, generate_heatmap
-from config import API_KEY
+# from rapport import RapportGenerator, generate_heatmap
+# from config import API_KEY
 
 def get_center(bbox):
     x_min, y_min, x_max, y_max = bbox
@@ -145,8 +145,8 @@ def main():
 
     
     # Génération du rapport via ChatGPT
-    generator = RapportGenerator(api_key=API_KEY)
-    generator.create_rapport(stats, filename="Rapport.txt")
+    #generator = RapportGenerator(api_key=API_KEY)
+    #generator.create_rapport(stats, filename="Rapport.txt")
     
 if __name__ == '__main__':
     main()

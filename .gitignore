@@ -1,9 +1,6 @@
 # Ignorer l'environnement virtuel
-venv/
-.env/
-*.venv/
-venv*/
-env*/
+*venv*/
+*env*/
 
 # Ignorer les fichiers et dossiers de cache générés par Python
 __pycache__/
@@ -18,6 +15,8 @@ logs/
 
 # Ignorer les notebooks temporaires
 *.ipynb_checkpoints/
+
+#Fichiers de configs MacOS
 .DS_Store
 
 # Ignorer les weight
@@ -36,3 +35,6 @@ Result_test/*
 
 # Ignorer le fichier config sécurité des clés API
 config/*
+
+# Ignorer les données lourdes
+*heavy_data/

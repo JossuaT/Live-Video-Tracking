@@ -111,6 +111,8 @@ class Tracker:
           - recognized_player_ids
           - deepface_results
         """
+
+        # Lecture du fichier si les données existent
         if read_from_stub and stub_path is not None and os.path.exists(stub_path):
             with open(stub_path, 'rb') as f:
                 data = pickle.load(f)
@@ -126,7 +128,8 @@ class Tracker:
 
         bounding_boxes = self.detect_and_track_frames(frames, conf, imgsz, classes)
 
-        if stub_path is not None:
+        # Ecriture du nouveau fichier pickle
+        if stub_path is not None :
             with open(stub_path, 'wb') as f:
                 data = {
                     "bounding_boxes": bounding_boxes,
@@ -209,7 +212,7 @@ class Tracker:
             try:
                 results = DeepFace.find(
                     img_path=face_crop,
-                    db_path="/Users/nathansornet/Documents/Rugby_git/Live-Video-Tracking/data/players_dataset",
+                    db_path="./data/players_dataset",
                     model_name="ArcFace",
                     enforce_detection=False
                 )

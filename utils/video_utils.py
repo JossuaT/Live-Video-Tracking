@@ -1,6 +1,9 @@
 import cv2
 
-def read_video(video_path):
+def read_video(video_path: str) -> list:
+     """
+     Read a video and return a list of frames
+     """
      cap = cv2.VideoCapture(video_path)
      frames = []
      while True:
@@ -10,7 +13,7 @@ def read_video(video_path):
          frames.append(frame)
      return frames
 
-def save_video(output_video_frames, output_video_path,video_path):
+def save_video(output_video_frames, output_video_path, video_path):
     if not output_video_frames:
         print("No frames to save.")
         return
