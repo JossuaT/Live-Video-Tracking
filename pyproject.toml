@@ -1,0 +1,18 @@
+[project]
+name = "live-video-tracking"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "N-19-dev",email = "127797502+N-19-dev@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "deepface (>=0.0.93,<0.0.94)",
+    "opencv-contrib-python (>=4.11.0.86,<5.0.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

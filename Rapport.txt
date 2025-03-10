@@ -1,0 +1,37 @@
+**Rapport d'analyse vidéo et stratégie sportive**
+
+1. **Durée de la vidéo :**
+   - Nombre de frames traitées : 323
+   - Durée de la vidéo : 5.72 secondes
+
+2. **Nombre de joueurs uniques détectés :**
+   - 69 joueurs uniques ont été identifiés dans la vidéo.
+
+3. **Liste des joueurs reconnus (via reconnaissance faciale) :**
+   - Joueur reconnu : Antoine Dupont (ID: 7)
+
+4. **Joueur ayant possédé le ballon le plus longtemps :**
+   - Le joueur ayant possédé le ballon le plus longtemps est le joueur avec l'ID 107, pendant 63 frames. Il est probable qu'il ait attaqué la ligne de manière significative en raison de sa possession prolongée du ballon.
+
+5. **Passes de ballon :**
+   - Passe 1 : Joueur 1 a cédé le ballon à Joueur 30
+   - Passe 2 : Joueur 30 a cédé le ballon à Antoine Dupont (ID 7)
+   - Passe 3 : Antoine Dupont (ID 7) a cédé le ballon à Joueur 78
+   - Passe 4 : Joueur 78 a cédé le ballon à Joueur 107
+   - Passe 5 : Joueur 107 a cédé le ballon à Joueur 58
+   - Passe 6 : Joueur 58 a cédé le ballon à Joueur 139
+   - Passe 7 : Joueur 139 a cédé le ballon à Joueur 140
+   - Passe 8 : Joueur 140 a cédé le ballon à Joueur 139
+   - Passe 9 : Joueur 139 a cédé le ballon à Joueur 122
+   - Passe 10 : Joueur 122 a cédé le ballon à Joueur 107
+
+**Stratégies et recommandations :**
+1. **Exploiter la possession prolongée du ballon :** En identifiant les joueurs capables de garder le contrôle du ballon sur une longue période, l'équipe peut développer des stratégies pour les soutenir efficacement et les encourager à attaquer la ligne adverse.
+   
+2. **Renforcer la communication et les passes entre les joueurs :** En analysant les séquences de passes de ballon, l'équipe peut travailler sur l'amélioration de la coordination et de la communication entre les joueurs pour optimiser les transitions et les attaques.
+
+3. **Valoriser le jeu collectif :** Encourager les joueurs à privilégier les passes précises et opportunes pour créer des opportunités d'attaque plus efficaces et renforcer la cohésion de l'équipe sur le terrain.
+
+4. **Analyser les mouvements offensifs du joueur avec l'ID 107 :** Étudier les actions et les prises de décision du joueur ayant possédé le ballon le plus longtemps peut permettre de définir des stratégies pour exploiter sa capacité à attaquer la ligne et créer des occasions de marquer.
+
+En mettant en œuvre ces recommandations et en s'appuyant sur les insights tirés de l'analyse vidéo, l'équipe pourra améliorer sa performance collective et renforcer sa stratégie de jeu sur le terrain.

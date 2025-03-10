@@ -1,3 +1,9 @@
+#####################################For Detection##################################
+scikit-learn
+supervision
+matplotlib
+
+
 absl-py==2.1.0
 asttokens==2.4.1
 astunparse==1.6.3
@@ -54,7 +60,7 @@ mtcnn==1.0.0
 namex==0.0.8
 nest-asyncio==1.6.0
 networkx==3.4.2
-numpy==2.0.2
+numpy==2.1.2
 opencv-contrib-python==4.10.0.84
 opencv-python==4.10.0.84
 opt_einsum==3.4.0
