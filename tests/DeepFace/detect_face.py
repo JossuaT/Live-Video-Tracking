@@ -2,7 +2,7 @@ import cv2
 from deepface import DeepFace
 
 # Charger l'image
-image_path = "data/image5.png"
+image_path = "data/image1.png"
 image = cv2.imread(image_path)
 
 backends = [
@@ -24,11 +24,17 @@ backends = [
 # Utiliser DeepFace pour détecter les visages
 detected_faces = DeepFace.extract_faces(
     img_path=image_path,
-    detector_backend=backends[5]
+    detector_backend=backends[0],
+    enforce_detection=False
 )
 
+faces = [f for f in detected_faces if f["confidence"] > 0.6]
+
+print (len(faces))
+print(faces)
+
 # Dessiner les bounding boxes
-for face in detected_faces:
+for face in faces:
     x = face['facial_area']['x']
     y = face['facial_area']['y']
     w = face['facial_area']['w']

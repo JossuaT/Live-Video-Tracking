@@ -1,17 +1,22 @@
 import cv2
 
 def read_video(video_path: str) -> list:
-     """
-     Read a video and return a list of frames
-     """
-     cap = cv2.VideoCapture(video_path)
-     frames = []
-     while True:
-         ret, frame = cap.read()
-         if not ret:
-             break
-         frames.append(frame)
-     return frames
+    """
+    Read a video, print duration and return a list of frames and duration
+    """
+    cap = cv2.VideoCapture(video_path)
+    frames = []
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frames.append(frame)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frame_count = cap.get(cv2.CAP_PROP_FRAME_COUNT)
+    video_duration = frame_count / fps if fps != 0 else 0
+    cap.release()
+    print(f"Durée de la vidéo : {video_duration:.2f} secondes")
+    return frames, video_duration
 
 def save_video(output_video_frames, output_video_path, video_path):
     if not output_video_frames:

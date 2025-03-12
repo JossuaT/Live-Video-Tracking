@@ -4,8 +4,8 @@ from deepface import DeepFace
 def main():
     # Recherche de correspondances pour l'image spécifiée dans le dataset
     results = DeepFace.find(
-        img_path='/Users/nathansornet/Documents/Rugby_git/Live-Video-Tracking/data/image-2.jpg',
-        db_path='/Users/nathansornet/Documents/Rugby_git/Live-Video-Tracking/data/players_dataset',
+        img_path='./data/image5.png',
+        db_path='./data/players_dataset',
         model_name='ArcFace'
     )
     

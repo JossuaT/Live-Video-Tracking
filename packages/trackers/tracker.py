@@ -5,7 +5,7 @@ import os
 import cv2
 import sys
 sys.path.append('../')
-from utils import get_bbox_width, get_center_of_bbox, extract_dominant_color
+from packages.utils import get_center, compute_distance, extract_dominant_color
 import numpy as np
 from PIL import Image
 from supervision import BoxAnnotator, LabelAnnotator, Color
@@ -27,11 +27,16 @@ class Tracker:
     def detect_and_track_frames(self, frames, conf=0.25, imgsz=1280, classes=[0, 32]):
         """Détecte et suit les objets (Players et Sport Ball) sur toutes les frames avec YOLO et ByteTrack."""
         all_tracked_boxes = []
+        total_frames = len(frames)
         for frame_idx, frame in enumerate(frames):
+            print(f"\n\n🔎 PROCESSING FRAME {frame_idx} / {total_frames}")
             if isinstance(frame, str):
                 frame = cv2.imread(frame)
             
             detections = self.model.predict(frame, conf=conf, imgsz=imgsz, classes=classes)[0]
+            print(f"Detections : {detections}")
+            # C'est ici qu'il faut ajouter la détection des mêlées, touches etc...
+
             if hasattr(detections.boxes, "cls"):
                 orig_class_ids = detections.boxes.cls.cpu().numpy().astype(int)
             else:
@@ -197,33 +202,51 @@ class Tracker:
         """
         x_min, y_min, x_max, y_max = bbox
         player_crop = frame[y_min:y_max, x_min:x_max]
-        face_model = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        gray_crop = cv2.cvtColor(player_crop, cv2.COLOR_BGR2GRAY)
-        faces = face_model.detectMultiScale(gray_crop, scaleFactor=1.1, minNeighbors=5)
+
+        #face_model = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        #gray_crop = cv2.cvtColor(player_crop, cv2.COLOR_BGR2GRAY)
+        #faces = face_model.detectMultiScale(gray_crop, scaleFactor=1.1, minNeighbors=5)
+        # =================================================================================
+        detected_faces = DeepFace.extract_faces(
+            img_path = player_crop,
+            detector_backend = 'opencv',
+            enforce_detection = False
+        )
+        faces = [f for f in detected_faces if f["confidence"] > 0.7]
+        # ???
+        faces.sort(key=lambda f: f["confidence"], reverse=True)
         identity_label = None
         face_bbox = None
 
         if len(faces) > 0:
-            (fx, fy, fw, fh) = faces[0]
+            face = faces[0]
+            print("🧑 Visage détecté dans la bounding box.")
+            # Pour détection haarcascades
+            #(fx, fy, fw, fh) = faces[0]
+
+            # Pour détection opencv via Deepface
+            fx, fy, fw, fh = face['facial_area']['x'], face['facial_area']['y'], face['facial_area']['w'], face['facial_area']['h']
             face_crop = player_crop[fy:fy+fh, fx:fx+fw]
             face_bbox = (x_min + fx, y_min + fy, x_min + fx + fw, y_min + fy + fh)
-            print("✅ Visage détecté dans la bounding box.")
-            print("Démarrage de la reconnaissance pour ce visage...")
+            print("     Démarrage de la reconnaissance pour ce visage...")
             try:
                 results = DeepFace.find(
                     img_path=face_crop,
                     db_path="./data/players_dataset",
-                    model_name="ArcFace",
-                    enforce_detection=False
+                    model_name="Facenet512",
+                    enforce_detection=False,
+                    silent=True
                 )
                 recognized = True if len(results[0]) > 0 else False
                 if recognized:
-                    identity_path = results[0].iloc[0]['identity']
+                    best_similarity_pos = min(enumerate(results[0]['distance']), key=lambda x: x[1])[0]
+                    identity_path = results[0]['identity'][best_similarity_pos]
                     identity_name = os.path.basename(os.path.dirname(identity_path))
                     identity_label = identity_name
-                    print("Identité reconnue :", identity_label)
+                    print("     ✅ Identité reconnue :", identity_label)
                 else:
                     recognized = False
+                    print("     👻 Aucune correspondance.")
             except Exception as e:
                 print(f"❌ Erreur DeepFace : {e}")
                 recognized = False
@@ -237,7 +260,7 @@ class Tracker:
 
             return face_crop, recognized, identity_label, face_bbox
         else:
-            print("⚠️ Aucun visage détecté dans cette bounding box.")
+            print("⚠️  Aucun visage détecté dans cette bounding box.")
             return player_crop, False, None, None
 
     def save_deepface_results(self, file_path="deepface_results.json"):

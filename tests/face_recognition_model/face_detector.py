@@ -21,7 +21,7 @@ while True:
     lowerbodies = lowerbody_model.detectMultiScale(gray_frame, scaleFactor=1.1, minNeighbors=2)
     upperbodies = upperbody_model.detectMultiScale(gray_frame, scaleFactor=1.1, minNeighbors=3)
     fullbodies = fullbody_model.detectMultiScale(gray_frame, scaleFactor=1.1, minNeighbors=2)
-
+    print(print(faces))
     for (x, y, w, h) in faces:
         start_point, end_point = (x, y), (x+w, y+h)
         color = (0, 0, 0)

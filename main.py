@@ -1,39 +1,28 @@
 import cv2
 import os
 import pickle
-from packages.utils import read_video, save_video
+from packages.utils import read_video, save_video, get_center, compute_distance, get_video_id
 from packages.trackers import Tracker
 from packages.teams_assigner import TeamAssigner
 # from rapport import RapportGenerator, generate_heatmap
 # from config import API_KEY
 
-def get_center(bbox):
-    x_min, y_min, x_max, y_max = bbox
-    return ((x_min + x_max) // 2, (y_min + y_max) // 2)
-
-def compute_distance(center1, center2):
-    return ((center1[0] - center2[0])**2 + (center1[1] - center2[1])**2)**0.5
-
 def main():
-    video_path = "video/video_4.mp4"
-    
-    # Calcul de la durée de la vidéo
-    cap = cv2.VideoCapture(video_path)
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    frame_count = cap.get(cv2.CAP_PROP_FRAME_COUNT)
-    video_duration = frame_count / fps if fps != 0 else 0
-    cap.release()
-    print(f"Durée de la vidéo : {video_duration:.2f} secondes")
+    video_path = "video/video_4-crop.mp4"
     
     # Chargement des frames de la vidéo
-    video_frames = read_video(video_path)
+    video_frames, video_duration = read_video(video_path)
     
     # Instanciation du Tracker
     tracker = Tracker('models_weight/yolo11x.pt')
     
+    # Définir l'id de la vidéo
+    video_id = get_video_id(video_path, JSON_file="./data/JSON/video_hashes.json")
+    print(f"🎬 ID de la vidéo : {video_id}")
     # Définir le chemin du stub
-    stub_path = "stubs/tracks_stubs.pkl"
-    
+    stub_path = './stubs/' + video_id + '_tracks_stubs.pkl'
+    print(f"Nom du fichier stub : {stub_path}")
+
     # Récupération des bounding boxes via le stub
     bounding_boxes = tracker.get_bounding_boxes(video_frames, read_from_stub=True, stub_path=stub_path)
     
