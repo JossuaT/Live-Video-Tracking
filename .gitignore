@@ -23,7 +23,7 @@ logs/
 .DS_Store
 
 # Ignorer les weight
-models_weight/*
+models/models_weight/*
 
 # Ignorer les vidéos 
 video/*
