@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 # Chemin vers le modèle LBPH entraîné (assure-toi que ce fichier existe)
-MODEL_PATH = "models/face_recognition_model.yml"
+MODEL_PATH = "models/face_recognition_model/face_recognition_model.yml"
 # if not os.path.exists(MODEL_PATH):
 #     raise Exception(f"Le modèle LBPH n'a pas été trouvé à : {MODEL_PATH}")
 

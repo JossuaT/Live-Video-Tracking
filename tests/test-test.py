@@ -40,17 +40,22 @@ def recognition(frame, bbox):
     # =================================================================================
     detected_faces = DeepFace.extract_faces(
         img_path = player_crop,
-        detector_backend = 'opencv',
+        detector_backend = 'yolov8',
         enforce_detection = False,
+        expand_percentage=25
     )
     #print(f"Detected faces: {len(detected_faces)} \n {detected_faces}")
-    faces = [f for f in detected_faces if f["confidence"] > 0.7]
-    #print(f"Faces: {len(faces)} \n {faces}")
+    faces = [f for f in detected_faces if f["confidence"] >= 0.8]
+    print(f"Faces: {len(faces)} \n {faces}")
 
     # ???
     faces.sort(key=lambda f: f["confidence"], reverse=True)
     identity_label = None
     face_bbox = None
+    print(f"Faces: {len(faces)}")
+    for f in faces :
+        print (f"Confidence: {f['confidence']}\n {f}")
+    
 
     if len(faces) > 0:
         for face in faces :
@@ -90,7 +95,7 @@ def recognition(frame, bbox):
         print("⚠️  Aucun visage détecté dans cette bounding box.")
         return player_crop, False, None, None
 
-path = './data/image7.png'
+path = './data/image3.png'
 
 frame = cv2.imread(path, cv2.IMREAD_COLOR)
 

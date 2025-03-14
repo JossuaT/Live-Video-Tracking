@@ -1,27 +1,31 @@
 import cv2
 import os
 import pickle
-from packages.utils import read_video, save_video, get_center, compute_distance, get_video_id
+from packages.utils import read_video, save_video, compute_distance, get_video_id, get_center_xyxy, ask_question
 from packages.trackers import Tracker
 from packages.teams_assigner import TeamAssigner
-# from rapport import RapportGenerator, generate_heatmap
+# from packages.rapport import RapportGenerator, generate_heatmap
 # from config import API_KEY
 
 def main():
-    video_path = "video/video_4-crop.mp4"
+    input_video_path = "video/video_4-crop.mp4"
     
     # Chargement des frames de la vidéo
-    video_frames, video_duration = read_video(video_path)
+    video_frames, video_duration = read_video(input_video_path)
     
     # Instanciation du Tracker
-    tracker = Tracker('models_weight/yolo11x.pt')
+    tracker = Tracker('./models/models_weight/yolo11x.pt')
     
     # Définir l'id de la vidéo
-    video_id = get_video_id(video_path, JSON_file="./data/JSON/video_hashes.json")
+    video_id = get_video_id(input_video_path, JSON_file="./data/JSON/video_hashes.json")
     print(f"🎬 ID de la vidéo : {video_id}")
     # Définir le chemin du stub
     stub_path = './stubs/' + video_id + '_tracks_stubs.pkl'
     print(f"Nom du fichier stub : {stub_path}")
+    # Utilisation OU suppression du fichier stub
+    if os.path.exists(stub_path) and ask_question()==False:
+        os.remove(stub_path)
+        print(f"🗑️ Fichier stub {stub_path} supprimé.")
 
     # Récupération des bounding boxes via le stub
     bounding_boxes = tracker.get_bounding_boxes(video_frames, read_from_stub=True, stub_path=stub_path)
@@ -39,7 +43,8 @@ def main():
     annotated_frames = tracker.draw_annotations(video_frames, bounding_boxes)
     
     # Sauvegarde de la vidéo annotée
-    save_video(annotated_frames, "output_videos/output_video.avi", video_path)
+    output_video_path = "output_videos/" + video_id + "_output_video.avi"
+    save_video(annotated_frames, output_video_path, input_video_path)
     print("Vidéo annotée sauvegardée avec succès.")
     
     # Partie statistiques
@@ -64,11 +69,11 @@ def main():
                 if detection.get("face_detected", False) and detection.get("face_identity") is not None:
                     recognized_players.add(detection["id"])
         if ball and players:
-            ball_center = get_center(ball["bbox"])
+            ball_center = get_center_xyxy(ball["bbox"])
             closest_player = None
             min_distance = float('inf')
             for player in players:
-                player_center = get_center(player["bbox"])
+                player_center = get_center_xyxy(player["bbox"])
                 distance = compute_distance(ball_center, player_center)
                 if distance < min_distance:
                     min_distance = distance

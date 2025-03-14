@@ -2,7 +2,7 @@ import cv2
 from deepface import DeepFace
 
 # Charger l'image
-image_path = "data/image1.png"
+image_path = "data/image3.png"
 image = cv2.imread(image_path)
 
 backends = [
@@ -24,8 +24,9 @@ backends = [
 # Utiliser DeepFace pour détecter les visages
 detected_faces = DeepFace.extract_faces(
     img_path=image_path,
-    detector_backend=backends[0],
-    enforce_detection=False
+    detector_backend='yolov8',
+    enforce_detection=False,
+    expand_percentage=25
 )
 
 faces = [f for f in detected_faces if f["confidence"] > 0.6]
